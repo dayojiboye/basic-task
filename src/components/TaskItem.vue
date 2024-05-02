@@ -1,5 +1,7 @@
 <template>
-  <li class="w-full flex gap-2 items-center border-b border-b-gray-200 pb-4">
+  <li
+    class="w-full flex gap-2 items-center border-b border-b-gray-200 last-of-type:border-none pb-4"
+  >
     <CheckIcon v-if="isCompleted" class="w-6 h-6" />
     <ExclamationIcon v-else class="w-6 h-6" />
     <p class="text-base uppercase">{{ title }}</p>

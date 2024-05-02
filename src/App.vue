@@ -34,7 +34,7 @@ export default {
         if (index === id) {
           return {
             ...task,
-            completed: task.completed ? false : true
+            completed: !task.completed
           }
         }
         return task
@@ -58,11 +58,14 @@ export default {
 </script>
 
 <template>
-  <header role="banner" class="bg-gray-700 flex justify-center py-5 px-2 w-full">
+  <header
+    role="banner"
+    class="bg-gray-700 flex justify-center py-5 px-2 w-full fixed top-0 left-0 z-10 h-[70px] shadow-gray-400 shadow-sm"
+  >
     <h1 class="font-bold text-xl lg:text-2xl text-white">TASKS FOR TODAY</h1>
   </header>
 
-  <main class="w-full py-8 px-4 max-w-[768px] mx-auto">
+  <main role="main" class="w-full py-8 px-4 max-w-[768px] mx-auto mt-[70px]">
     <AddTask @onAddTask="addTask" />
     <!-- List -->
     <div class="mt-8 w-full">
