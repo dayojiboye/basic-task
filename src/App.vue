@@ -1,13 +1,17 @@
 <script>
 import AddTask from '@/components/AddTask.vue'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import useStorage from '@/hooks/use-storage'
 import TaskItem from './components/TaskItem.vue'
+import ExclamationIcon from './assets/exclamation-icon.svg?component'
+import CheckIcon from './assets/check-icon.svg?component'
 
 export default {
   components: {
     AddTask,
-    TaskItem
+    TaskItem,
+    ExclamationIcon,
+    CheckIcon
   },
 
   setup() {
@@ -47,11 +51,23 @@ export default {
       setItem('tasks', JSON.stringify(tasks.value))
     })
 
+    const allPendingTasks = computed(() => {
+      const pendingTasks = tasks.value.filter((task) => !task.completed)
+      return pendingTasks
+    })
+
+    const allCompletedTasks = computed(() => {
+      const completedTasks = tasks.value.filter((task) => task.completed)
+      return completedTasks
+    })
+
     return {
       tasks,
       addTask,
       deleteTask,
-      toggleComplete
+      toggleComplete,
+      allPendingTasks,
+      allCompletedTasks
     }
   }
 }
@@ -60,9 +76,22 @@ export default {
 <template>
   <header
     role="banner"
-    class="bg-gray-700 flex justify-center py-5 px-2 w-full fixed top-0 left-0 z-10 h-[70px] shadow-gray-400 shadow-sm"
+    class="bg-gray-700 flex justify-center py-5 px-2 w-full fixed top-0 left-[50%] right-[50%] translate-x-[-50%] z-10 h-[70px] shadow-gray-400 shadow-sm max-w-[1920px]"
   >
-    <h1 class="font-bold text-xl lg:text-2xl text-white">TASKS FOR TODAY</h1>
+    <div class="max-w-[768px] px-4 mx-auto w-full flex justify-between items-center gap-2">
+      <h1 class="font-bold text-lg lg:text-xl text-white">TASKS FOR TODAY</h1>
+      <div class="flex items-center gap-2">
+        <span class="flex gap-1 items-center">
+          <ExclamationIcon class="w-5 h-5" />
+          <b class="text-white font-medium text-sm">{{ allPendingTasks.length }}</b>
+        </span>
+
+        <span class="flex gap-1 items-center">
+          <CheckIcon class="w-5 h-5" />
+          <b class="text-white font-medium text-sm">{{ allCompletedTasks.length }}</b>
+        </span>
+      </div>
+    </div>
   </header>
 
   <main role="main" class="w-full py-8 px-4 max-w-[768px] mx-auto mt-[70px]">
